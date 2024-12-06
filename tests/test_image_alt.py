@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from config.settings import BASE_URL
-from utils.csv import write_to_csv
+from utils.excel_handler import write_to_excel
 
 def test_image_alt():
     driver = webdriver.Chrome()
@@ -12,7 +12,7 @@ def test_image_alt():
         images = driver.find_elements(By.TAG_NAME, "img")
         
         if not images:
-            write_to_csv(BASE_URL, "Image Alt Attribute Test", "fail", "No images found")
+            write_to_excel(BASE_URL, "Image Alt Attribute Test", "fail", "No images found")
             return
         
         missing_alt = []  # List to store images missing alt attributes
@@ -33,12 +33,12 @@ def test_image_alt():
             if empty_alt:
                 comments.append(f"Empty alt attribute for images: {', '.join(empty_alt)}")
             
-            write_to_csv(BASE_URL, "Image Alt Attribute Test", "fail", "; ".join(comments))
+            write_to_excel(BASE_URL, "Image Alt Attribute Test", "fail", "; ".join(comments))
         else:
-            write_to_csv(BASE_URL, "Image Alt Attribute Test", "pass", "All images have valid alt attributes")
+            write_to_excel(BASE_URL, "Image Alt Attribute Test", "pass", "All images have valid alt attributes")
 
     except Exception as e:
-        write_to_csv(BASE_URL, "Image Alt Attribute Test", "fail", f"Error: {e}")
+        write_to_excel(BASE_URL, "Image Alt Attribute Test", "fail", f"Error: {e}")
 
     finally:
         driver.quit()
