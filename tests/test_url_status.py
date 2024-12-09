@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from urllib.parse import urljoin
 from config.settings import BASE_URL
-from utils.excel_handler import write_to_excel
+from utils.excel_handler import write_to_excel_test_results
 import requests
 
 
@@ -37,14 +37,14 @@ def test_url_status():
                 status_code = response.status_code
                 
                 if status_code == 404:
-                    write_to_excel(full_url, "URL Status Test", "Fail", "Status code 404")
+                    write_to_excel_test_results(full_url, "URL Status Test", "Fail", "Status code 404")
                     print(f"Test 4 failed url -> {full_url} - 404")
                 else:
-                    write_to_excel(full_url, "URL Status Test", "Pass", f"Status code {status_code}")
+                    write_to_excel_test_results(full_url, "URL Status Test", "Pass", f"Status code {status_code}")
                     print(f"Test 4 passed url -> {full_url} - 200")
             except Exception as e:
                 # Handle errors like timeouts or invalid URLs
-                write_to_excel(full_url, "URL Status Test", "Fail", f"Error: {str(e)}")
+                write_to_excel_test_results(full_url, "URL Status Test", "Fail", f"Error: {str(e)}")
                 print(f"Test 4 failed url -> {full_url} - 404")
     finally:
         # Quit the browser

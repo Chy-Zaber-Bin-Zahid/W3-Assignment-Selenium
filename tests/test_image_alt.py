@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from config.settings import BASE_URL
-from utils.excel_handler import write_to_excel
+from utils.excel_handler import write_to_excel_test_results
 
 def test_image_alt():
     print('Test 3 started.')
@@ -13,7 +13,7 @@ def test_image_alt():
         images = driver.find_elements(By.TAG_NAME, "img")
         
         if not images:
-            write_to_excel(BASE_URL, "Image Alt Attribute Test", "Fail", "No images found")
+            write_to_excel_test_results(BASE_URL, "Image Alt Attribute Test", "Fail", "No images found")
             print('Test 3 failed.')
             return
         
@@ -35,14 +35,14 @@ def test_image_alt():
             if empty_alt:
                 comments.append(f"Empty alt attribute for images: {', '.join(empty_alt)}")
             
-            write_to_excel(BASE_URL, "Image Alt Attribute Test", "Fail", "; ".join(comments))
+            write_to_excel_test_results(BASE_URL, "Image Alt Attribute Test", "Fail", "; ".join(comments))
             print('Test 3 failed.')
         else:
-            write_to_excel(BASE_URL, "Image Alt Attribute Test", "Pass", "All images have valid alt attributes")
+            write_to_excel_test_results(BASE_URL, "Image Alt Attribute Test", "Pass", "All images have valid alt attributes")
             print('Test 3 passed.')
 
     except Exception as e:
-        write_to_excel(BASE_URL, "Image Alt Attribute Test", "Fail", f"Error: {e}")
+        write_to_excel_test_results(BASE_URL, "Image Alt Attribute Test", "Fail", f"Error: {e}")
         print('Test 3 failed.')
 
     finally:
