@@ -5,6 +5,7 @@ from utils.excel_handler import write_to_excel  # Utility to write results to Ex
 
 
 def test_html_sequence():
+    print('Test 2 started.')
     driver = webdriver.Chrome()
     driver.get(BASE_URL)
 
@@ -13,7 +14,7 @@ def test_html_sequence():
         headings = driver.find_elements(By.XPATH, "//h1|//h2|//h3|//h4|//h5|//h6")
 
         if not headings:
-            write_to_excel(BASE_URL, "HTML Tag Sequence Test", "fail", "No headings found on the page.")
+            write_to_excel(BASE_URL, "HTML Tag Sequence Test", "Fail", "No headings found on the page.")
             return
 
         # Extract heading levels (1 for <h1>, 2 for <h2>, etc.)
@@ -32,6 +33,7 @@ def test_html_sequence():
                 "fail",
                 f"Missing heading levels: {', '.join(f'H{level}' for level in sorted(missing_levels))}"
             )
+            print('Test 2 failed.')
             return
 
         # Ensure headings appear in proper order (e.g., H2 should not come before H1)
@@ -43,17 +45,19 @@ def test_html_sequence():
                     "fail",
                     f"Improper sequence: H{heading_levels[i]} appears before H{heading_levels[i - 1]}"
                 )
+                print('Test 2 failed.')
                 return
 
         # If all checks pass
-        write_to_excel(BASE_URL, "HTML Tag Sequence Test", "pass", "Heading sequence is valid.")
+        write_to_excel(BASE_URL, "HTML Tag Sequence Test", "Pass", "Heading sequence is valid.")
+        print('Test 2 passed.')
 
     except Exception as e:
-        write_to_excel(BASE_URL, "HTML Tag Sequence Test", "fail", f"Error occurred: {str(e)}")
-
+        write_to_excel(BASE_URL, "HTML Tag Sequence Test", "Fail", f"Error occurred: {str(e)}")
+        print('Test 2 failed.')
     finally:
         driver.quit()
-
+        print('Test 2 closed.')
 
 if __name__ == "__main__":
     test_html_sequence()
