@@ -1,36 +1,59 @@
-import openpyxl
+import pandas as pd
 import os
+from config.settings import EXCEL_PATH
 
-EXCEL_PATH = "./reports/test_report.xlsx"
 
-def write_to_excel(page_url, testcase, status, comment):
-    """
-    Appends test results to an Excel file without overwriting previous data.
-    
-    If the file does not exist, it creates a new workbook and writes the header row first.
+def write_to_excel_scrape(site_url, campaign_id, site_name, browser, country_code, ip):
+    # Prepare the data
+    new_data = {
+        "Site URL": [site_url],
+        "Campaign ID": [campaign_id],
+        "Site Name": [site_name],
+        "Browser": [browser],
+        "Country Code": [country_code],
+        "IP": [ip]
+    }
+    new_row = pd.DataFrame(new_data)
 
-    Args:
-        page_url (str): The URL of the page being tested.
-        testcase (str): The name of the test case.
-        status (str): Pass/Fail status of the test case.
-        comment (str): Additional comments or error messages.
-    """
+    # Check if the Excel file exists
     if not os.path.exists(EXCEL_PATH):
-        # Create a new workbook and add a header row if the file doesn't exist
-        workbook = openpyxl.Workbook()
-        sheet = workbook.active
-        sheet.title = "Test Results"
-        # Write header row
-        sheet.append(["Page URL", "Test Case", "Pass/Fail", "Comments"])
-        workbook.save(EXCEL_PATH)
+        # Create a new DataFrame and save as a new Excel file
+        new_row.to_excel(EXCEL_PATH, index=False, sheet_name="Scrape Data")
+    else:
+        # Load the existing Excel file
+        with pd.ExcelFile(EXCEL_PATH) as existing_file:
+            # Check if the sheet exists
+            if 'Scrape Data' not in existing_file.sheet_names:
+                # Create a new sheet 'Scrape Data' if it doesn't exist
+                with pd.ExcelWriter(EXCEL_PATH, engine='openpyxl', mode='a') as writer:
+                    new_row.to_excel(writer, index=False, sheet_name="Scrape Data")
+            else:
+                # Load the existing sheet and append the new data
+                existing_data = pd.read_excel(EXCEL_PATH, sheet_name="Scrape Data")
+                updated_data = pd.concat([existing_data, new_row], ignore_index=True)
+                updated_data.to_excel(EXCEL_PATH, index=False, sheet_name="Scrape Data")
 
-    # Load the existing workbook
-    workbook = openpyxl.load_workbook(EXCEL_PATH)
-    sheet = workbook.active
 
-    # Append the new test result row
-    sheet.append([page_url, testcase, status, comment])
+def write_to_excel_test_results(page_url, testcase, status, comment):
+    # Prepare the new row as a dictionary for test results
+    new_data = {
+        "Page URL": [page_url],
+        "Test Case": [testcase],
+        "Pass/Fail": [status],
+        "Comments": [comment]
+    }
+    new_row = pd.DataFrame(new_data)
 
-    # Save changes to the workbook
-    workbook.save(EXCEL_PATH)
-    workbook.close()
+    # Check if the file exists
+    if not os.path.exists(EXCEL_PATH):
+        # Create a new DataFrame with headers if the file doesn't exist
+        new_row.to_excel(EXCEL_PATH, index=False, sheet_name="Test Results")
+    else:
+        # Load the existing Excel file
+        existing_data = pd.read_excel(EXCEL_PATH, sheet_name="Test Results", engine='openpyxl')
+
+        # Append the new data
+        updated_data = pd.concat([existing_data, new_row], ignore_index=True)
+
+        # Save the updated data back to the "Test Results" sheet
+        updated_data.to_excel(EXCEL_PATH, index=False, sheet_name="Test Results")
