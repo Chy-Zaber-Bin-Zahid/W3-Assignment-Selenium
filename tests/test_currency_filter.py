@@ -32,8 +32,7 @@ def test_currency_filter():
 
         # Iterate through options
         for i, option in enumerate(options):
-            currency_text = option.text.strip()
-            print(f"Option {i + 1}: {currency_text}")
+            print(f"Option {i + 1}:")
 
             try:
                 # Scroll and click the option
@@ -48,22 +47,22 @@ def test_currency_filter():
                 price_info = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, ".price-info.js-price-value"))
                 )
-                print(f"Price info after selecting {currency_text}: {price_info.text}")
+                print(f"Price info after selecting: {price_info.text}")
 
                 # Write successful test result to Excel
                 write_to_excel_test_results(
                     page_url=BASE_URL,
-                    testcase=f"Currency Filter - {currency_text}",
+                    testcase=f"Currency Filter",
                     status="Pass",
                     comment=f"Successfully updated price info: {price_info.text}"
                 )
 
             except Exception as e:
-                print(f"Error for currency {currency_text}: {e}")
+                print(f"Error for currency: {e}")
                 # Write failed test result to Excel
                 write_to_excel_test_results(
                     page_url=BASE_URL,
-                    testcase=f"Currency Filter - {currency_text}",
+                    testcase=f"Currency Filter",
                     status="Fail",
                     comment=str(e)
                 )
