@@ -4,6 +4,11 @@ from config.settings import EXCEL_PATH
 
 
 def write_to_excel_scrape(site_url, campaign_id, site_name, browser, country_code, ip):
+    # Ensure the directory exists
+    directory = os.path.dirname(EXCEL_PATH)
+    if not os.path.exists(directory):
+        os.makedirs(directory)  # Create the directory if it doesn't exist
+
     # Prepare the data
     new_data = {
         "Site URL": [site_url],
@@ -35,6 +40,11 @@ def write_to_excel_scrape(site_url, campaign_id, site_name, browser, country_cod
 
 
 def write_to_excel_test_results(page_url, testcase, status, comment):
+    # Ensure the directory exists
+    directory = os.path.dirname(EXCEL_PATH)
+    if not os.path.exists(directory):
+        os.makedirs(directory)  # Create the directory if it doesn't exist
+
     # Prepare the new row as a dictionary for test results
     new_data = {
         "Page URL": [page_url],
