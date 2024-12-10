@@ -2,9 +2,6 @@ import pandas as pd
 import os
 from config.settings import EXCEL_PATH
 
-import pandas as pd
-import os
-from config.settings import EXCEL_PATH
 
 def write_to_excel_scrape(site_url, campaign_id, site_name, browser, country_code, ip):
     # Prepare the data

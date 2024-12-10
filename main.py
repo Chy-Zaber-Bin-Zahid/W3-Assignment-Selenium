@@ -11,5 +11,5 @@ if __name__ == "__main__":
     h1_h6_test.test_html_sequence()
     image_test.test_image_alt()
     url_test.test_url_status()
-    # filter_test.test_currency_filter()
+    filter_test.test_currency_filter()
     scrape_test.test_scrape_data()
