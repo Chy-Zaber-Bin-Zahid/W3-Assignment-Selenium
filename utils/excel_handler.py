@@ -8,7 +8,6 @@ def write_to_excel_scrape(site_url, campaign_id, site_name, browser, country_cod
     directory = os.path.dirname(EXCEL_PATH)
     if not os.path.exists(directory):
         os.makedirs(directory)  # Create the directory if it doesn't exist
-
     # Prepare the data
     new_data = {
         "Site URL": [site_url],
@@ -19,8 +18,6 @@ def write_to_excel_scrape(site_url, campaign_id, site_name, browser, country_cod
         "IP": [ip]
     }
     new_row = pd.DataFrame(new_data)
-
-    # Check if the Excel file exists
     if not os.path.exists(EXCEL_PATH):
         # Create a new DataFrame and save as a new Excel file
         new_row.to_excel(EXCEL_PATH, index=False, sheet_name="Scrape Data")
@@ -44,7 +41,6 @@ def write_to_excel_test_results(page_url, testcase, status, comment):
     directory = os.path.dirname(EXCEL_PATH)
     if not os.path.exists(directory):
         os.makedirs(directory)  # Create the directory if it doesn't exist
-
     # Prepare the new row as a dictionary for test results
     new_data = {
         "Page URL": [page_url],
@@ -53,17 +49,13 @@ def write_to_excel_test_results(page_url, testcase, status, comment):
         "Comments": [comment]
     }
     new_row = pd.DataFrame(new_data)
-
-    # Check if the file exists
     if not os.path.exists(EXCEL_PATH):
         # Create a new DataFrame with headers if the file doesn't exist
         new_row.to_excel(EXCEL_PATH, index=False, sheet_name="Test Results")
     else:
         # Load the existing Excel file
         existing_data = pd.read_excel(EXCEL_PATH, sheet_name="Test Results", engine='openpyxl')
-
         # Append the new data
         updated_data = pd.concat([existing_data, new_row], ignore_index=True)
-
         # Save the updated data back to the "Test Results" sheet
         updated_data.to_excel(EXCEL_PATH, index=False, sheet_name="Test Results")

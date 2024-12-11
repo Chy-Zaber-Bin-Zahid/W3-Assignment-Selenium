@@ -22,12 +22,9 @@ def test_url_status():
     """Check the status of all links on the page and log results in Excel."""
     driver = webdriver.Chrome()
     try:
-        # Open the base URL
         driver.get(BASE_URL)
-        
         # Extract all links from the page
         links = get_all_links(driver)
-        
         for link in links:
             # Resolve relative URLs
             full_url = urljoin(BASE_URL, link)
@@ -35,7 +32,6 @@ def test_url_status():
                 # Check the status of the URL
                 response = requests.get(full_url, timeout=10)
                 status_code = response.status_code
-                
                 if status_code == 404:
                     write_to_excel_test_results(full_url, "URL Status Test", "Fail", "Status code 404")
                     print(f"Test 4 failed url -> {full_url} - 404")
@@ -47,7 +43,6 @@ def test_url_status():
                 write_to_excel_test_results(full_url, "URL Status Test", "Fail", f"Error: {str(e)}")
                 print(f"Test 4 failed url -> {full_url} - 404")
     finally:
-        # Quit the browser
         driver.quit()
         print('Test 4 closed.')
 
