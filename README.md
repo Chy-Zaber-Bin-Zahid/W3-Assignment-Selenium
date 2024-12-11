@@ -57,6 +57,13 @@ python main.py
 
 ---
 
+## Test Reports
+The results of the test cases are stored in an Excel report located at:
+`/reports/test_report.xlsx`.
+This file provides a detailed summary of the test execution.
+
+---
+
 ## Notes
 - Ensure all necessary drivers (e.g., ChromeDriver) are installed and available in your system's PATH.
 - Keep the `requirements.txt` file updated with all dependencies.
