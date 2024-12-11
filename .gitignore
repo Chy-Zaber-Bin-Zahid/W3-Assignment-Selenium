@@ -1,3 +1,4 @@
 env/
 __pycache__/
 test_report.xlsx
+.~lock.test_report.xlsx#
